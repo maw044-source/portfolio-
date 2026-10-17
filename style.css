@@ -3,12 +3,32 @@ html {
     accent-color: var(--color-accent);
 }
 
+.color-scheme {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 80%;
+}
+
+.color-scheme select {
+  font: inherit;
+}
+
+:root {
+  color-scheme: light dark;
+}
+
 body {
     font: 100%/1.5 system-ui;
 
     max-width: 100ch;
     margin-inline: auto;
     padding: 1em;
+}
+
+nav {
+  --border-color: oklch(50% 10% 200 / 40%);
+  border-bottom: 1px solid var(--border-color);
 }
 
 nav {
