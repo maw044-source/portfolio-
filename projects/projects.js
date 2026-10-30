@@ -33,15 +33,16 @@ function renderPieChart(projectsToShow) {
     .value((d) => d.value);
 
   const arcData = sliceGenerator(data);
+  const arcs = arcData.map((slice) => arcGenerator(slice));
 
   arcs.forEach((arc, index) => {
   d3.select('#projects-plot')
     .append('path')
     .attr('d', arc)
-    .attr('fill', colors(index))
+    .attr('fill', colors(data[index].label))
     .classed('selected', index === selectedIndex)
     .on('click', () => {
-      const selectedYear =
+      selectedIndex = selectedIndex === index ? -1 : index;
   selectedIndex === -1 ? null : data[selectedIndex].label;
 
 const filteredProjects = projects.filter((project) => {
@@ -60,7 +61,6 @@ renderProjects(filteredProjects, projectsContainer, 'h2');
 
 document.querySelector('.projects-title').textContent =
   `Projects (${filteredProjects.length})`;
-      selectedIndex = selectedIndex === index ? -1 : index;
 
       d3.select('#projects-plot')
         .selectAll('path')
@@ -74,7 +74,7 @@ document.querySelector('.projects-title').textContent =
 
   const legend = d3.select('.legend');
 
-  data.forEach((d) => {
+  data.forEach((d, index) => {
     legend.append('li')
       .attr('class', 'legend-item')
       .classed('selected', index === selectedIndex)
@@ -103,6 +103,7 @@ function updateProjects() {
 
 searchInput.addEventListener('input', (event) => {
   query = event.target.value.toLowerCase();
+  selectedIndex = -1;
   updateProjects();
 });
 
