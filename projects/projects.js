@@ -5,24 +5,32 @@ const projects = await fetchJSON('../lib/projects.json');
 const projectsContainer = document.querySelector('.projects');
 const searchInput = document.querySelector('.searchBar');
 
+const years = [
+  ...new Set(projects.map((project) => String(project.year))),
+];
+
 const colors = d3.scaleOrdinal(d3.schemeTableau10)
-  .domain([...new Set(projects.map((project) => String(project.year)))]);
+  .domain(years);
 
 let query = '';
-let selectedIndex = null;
+let selectedYear = null;
+
 function renderPieChart(projectsToShow) {
-  d3.select('#projects-plot').selectAll('*').remove();
-  d3.select('.legend').selectAll('*').remove();
+  const svg = d3.select('#projects-plot');
+  const legend = d3.select('.legend');
+
+  svg.selectAll('*').remove();
+  legend.selectAll('*').remove();
 
   const rolledData = d3.rollups(
     projectsToShow,
     (group) => group.length,
-    (project) => project.year,
+    (project) => String(project.year),
   );
 
   const data = rolledData.map(([year, count]) => ({
+    label: year,
     value: count,
-    label: String(year),
   }));
 
   const arcGenerator = d3.arc()
@@ -32,56 +40,22 @@ function renderPieChart(projectsToShow) {
   const sliceGenerator = d3.pie()
     .value((d) => d.value);
 
-  const arcData = sliceGenerator(data);
-  const arcs = arcData.map((slice) => arcGenerator(slice));
+  const slices = sliceGenerator(data);
 
-  arcs.forEach((arc, index) => {
-  const year = data[index].label;
+  slices.forEach((slice) => {
+    const year = slice.data.label;
 
-  d3.select('#projects-plot')
-    .append('path')
-    .attr('d', arc)
-    .attr('fill', colors(year))
-    .classed('selected', year === selectedYear)
-    .on('click', () => {
-      selectedYear = selectedYear === year ? null : year;
-      updateProjects();
-    });
-});
+    svg.append('path')
+      .attr('d', arcGenerator(slice))
+      .attr('fill', colors(year))
+      .classed('selected', year === selectedYear)
+      .on('click', () => {
+        selectedYear = selectedYear === year ? null : year;
+        updateProjects();
+      });
+  });
 
-const selectedYear =
-  selectedIndex === -1 ? null : data[selectedIndex].label;
-
-const filteredProjects = projects.filter((project) => {
-  const matchesSearch = Object.values(project)
-    .join(' ')
-    .toLowerCase()
-    .includes(query);
-
-  const matchesYear =
-    selectedYear === null || String(project.year) === selectedYear;
-
-  return matchesSearch && matchesYear;
-});
-
-renderProjects(filteredProjects, projectsContainer, 'h2');
-
-document.querySelector('.projects-title').textContent =
-  `Projects (${filteredProjects.length})`;
-
-      d3.select('#projects-plot')
-        .selectAll('path')
-        .classed('selected', (_, i) => i === selectedIndex);
-
-      d3.select('.legend')
-        .selectAll('li')
-        .classed('selected', (_, i) => i === selectedIndex);
-    });
-});
-
-  const legend = d3.select('.legend');
-
-  data.forEach((d, index) => {
+  data.forEach((d) => {
     legend.append('li')
       .attr('class', 'legend-item')
       .classed('selected', d.label === selectedYear)
@@ -108,7 +82,7 @@ function updateProjects() {
 
   renderProjects(filteredProjects, projectsContainer, 'h2');
 
-  // Keep other years available to click.
+  // Show the search results by year, keeping slices available.
   renderPieChart(searchResults);
 
   document.querySelector('.projects-title').textContent =
