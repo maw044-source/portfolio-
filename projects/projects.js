@@ -9,7 +9,7 @@ const colors = d3.scaleOrdinal(d3.schemeTableau10)
   .domain([...new Set(projects.map((project) => String(project.year)))]);
 
 let query = '';
-let selectedIndex = -1;
+let selectedIndex = null;
 function renderPieChart(projectsToShow) {
   d3.select('#projects-plot').selectAll('*').remove();
   d3.select('.legend').selectAll('*').remove();
@@ -36,13 +36,18 @@ function renderPieChart(projectsToShow) {
   const arcs = arcData.map((slice) => arcGenerator(slice));
 
   arcs.forEach((arc, index) => {
+  const year = data[index].label;
+
   d3.select('#projects-plot')
     .append('path')
     .attr('d', arc)
-    .attr('fill', colors(data[index].label))
-    .classed('selected', index === selectedIndex)
+    .attr('fill', colors(year))
+    .classed('selected', year === selectedYear)
     .on('click', () => {
-      selectedIndex = selectedIndex === index ? -1 : index;
+      selectedYear = selectedYear === year ? null : year;
+      updateProjects();
+    });
+});
 
 const selectedYear =
   selectedIndex === -1 ? null : data[selectedIndex].label;
@@ -79,7 +84,7 @@ document.querySelector('.projects-title').textContent =
   data.forEach((d, index) => {
     legend.append('li')
       .attr('class', 'legend-item')
-      .classed('selected', index === selectedIndex)
+      .classed('selected', d.label === selectedYear)
       .attr('style', `--color: ${colors(d.label)}`)
       .html(`
         <span class="swatch"></span>
@@ -89,15 +94,22 @@ document.querySelector('.projects-title').textContent =
 }
 
 function updateProjects() {
-  const filteredProjects = projects.filter((project) =>
+  const searchResults = projects.filter((project) =>
     Object.values(project)
       .join(' ')
       .toLowerCase()
       .includes(query)
   );
 
+  const filteredProjects = searchResults.filter((project) =>
+    selectedYear === null ||
+    String(project.year) === selectedYear
+  );
+
   renderProjects(filteredProjects, projectsContainer, 'h2');
-  renderPieChart(filteredProjects);
+
+  // Keep other years available to click.
+  renderPieChart(searchResults);
 
   document.querySelector('.projects-title').textContent =
     `Projects (${filteredProjects.length})`;
@@ -105,7 +117,6 @@ function updateProjects() {
 
 searchInput.addEventListener('input', (event) => {
   query = event.target.value.toLowerCase();
-  selectedIndex = -1;
   updateProjects();
 });
 
