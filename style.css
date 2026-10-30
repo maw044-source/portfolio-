@@ -195,3 +195,27 @@ h6 {
   margin-block: 1em 2em;
   font: inherit;
 }
+
+#projects-plot path {
+  transition: opacity 300ms;
+}
+
+#projects-plot:has(path:hover) path:not(:hover) {
+  opacity: 0.5;
+}
+
+#projects-plot path {
+  cursor: pointer;
+}
+
+#projects-plot path.selected {
+  fill: var(--color-accent);
+}
+
+.legend-item.selected {
+  font-weight: bold;
+}
+
+.legend-item.selected .swatch {
+  background: var(--color-accent);
+}
