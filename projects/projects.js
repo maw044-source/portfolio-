@@ -43,6 +43,8 @@ function renderPieChart(projectsToShow) {
     .classed('selected', index === selectedIndex)
     .on('click', () => {
       selectedIndex = selectedIndex === index ? -1 : index;
+
+const selectedYear =
   selectedIndex === -1 ? null : data[selectedIndex].label;
 
 const filteredProjects = projects.filter((project) => {
