@@ -219,3 +219,95 @@ h6 {
 .legend-item.selected .swatch {
   background: var(--color-accent);
 }
+
+#stats .stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.5rem;
+  margin-block: 2rem;
+}
+
+#stats .stats dt {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+#stats .stats dd {
+  margin: 0.3rem 0 0;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+#chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#chart .gridlines line {
+  stroke: currentColor;
+  stroke-opacity: 0.1;
+}
+
+#chart .gridlines path {
+  display: none;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 1000;
+  background: Canvas;
+  color: CanvasText;
+  border: 1px solid #888;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
+  pointer-events: none;
+  font-size: 0.9rem;
+}
+
+.tooltip:not([hidden]) {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 0.4rem 1rem;
+}
+
+.tooltip dt {
+  opacity: 0.7;
+}
+
+.tooltip dd {
+  margin: 0;
+}
+
+#chart .dots circle:hover {
+  fill: darkorange;
+}
+
+#chart .dots circle.selected {
+  fill: darkorange;
+  fill-opacity: 1;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+#chart .brush .selection {
+  fill: steelblue;
+  fill-opacity: 0.15;
+  stroke: steelblue;
+}
+
+#language-breakdown {
+  display: grid;
+  grid-template-columns: max-content auto;
+  gap: 0.5rem 1.5rem;
+}
+
+#language-breakdown dt {
+  font-weight: bold;
+}
+
+#language-breakdown dd {
+  margin: 0;
+}

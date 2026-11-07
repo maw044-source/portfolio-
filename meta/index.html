@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meta — May Wang</title>
+  <link rel="stylesheet" href="../style.css">
+  <script type="module" src="../global.js"></script>
+  <script type="module" src="main.js"></script>
+</head>
+<body>
+<dl id="commit-tooltip" class="tooltip" hidden>
+  <dt>Commit</dt>
+  <dd><a id="commit-link" target="_blank" rel="noopener"></a></dd>
+
+  <dt>Date</dt>
+  <dd id="commit-date"></dd>
+
+  <dt>Time</dt>
+  <dd id="commit-time"></dd>
+
+  <dt>Author</dt>
+  <dd id="commit-author"></dd>
+
+  <dt>Lines</dt>
+  <dd id="commit-lines"></dd>
+</dl>
+  <h1>Meta</h1>
+  <p>This page explores statistics about the code in my portfolio.</p>
+  <div id="stats"></div>
+  <h2>Commits by time of day</h2>
+<div id="chart"></div>
+<p id="selection-count">No commits selected</p>
+<dl id="language-breakdown"></dl>
+</body>
+</html>

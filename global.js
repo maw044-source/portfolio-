@@ -16,6 +16,7 @@ let pages = [
   { url: "contact/", title: "Contact" },
   { url: "cv/", title: "CV" },
   { url: "https://github.com/maw044-source", title: "GitHub" },
+  { url: "meta/", title: "Meta" },
 ];
 
 let nav = document.createElement("nav");
