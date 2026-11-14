@@ -105,8 +105,10 @@ export function renderProjects(
     const article = document.createElement('article');
 
     article.innerHTML = `
-  <${headingLevel}>${project.title}</${headingLevel}>
-  <img src="${project.image}" alt="${project.title}">
+  <${headingLevel}>${project.url
+  ? `<a href="${project.url}">${project.title}</a>`
+  : project.title}</${headingLevel}>
+  <img src="${new URL(project.image, import.meta.url).href}" alt="${project.title}">
   <div>
     <p>${project.description}</p>
     <p class="project-year">${project.year}</p>
