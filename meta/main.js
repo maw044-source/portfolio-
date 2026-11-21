@@ -153,16 +153,6 @@ function renderScatterPlot(data, commits) {
     .domain([0, 24])
     .range([usableArea.bottom, usableArea.top]);
 
-  // Draw faint horizontal grid lines.
-  svg.append('g')
-    .attr('class', 'gridlines')
-    .attr('transform', `translate(${usableArea.left}, 0)`)
-    .call(
-      d3.axisLeft(yScale)
-        .tickFormat('')
-        .tickSize(-usableArea.width)
-    );
-
   // Draw the date axis.
   svg.append('g')
     .attr('transform', `translate(0, ${usableArea.bottom})`)
@@ -228,8 +218,6 @@ updateLanguageBreakdown(selectedCommits);
 }
 
 const dots = svg.append('g').attr('class', 'dots');
-
-    const dots = svg.append('g').attr('class', 'dots');
 
 function updateScatterPlot(nextCommits) {
   visibleCommits = nextCommits;
