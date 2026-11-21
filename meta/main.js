@@ -153,10 +153,15 @@ function renderScatterPlot(data, commits) {
     .domain([0, 24])
     .range([usableArea.bottom, usableArea.top]);
 
-  // Draw the date axis.
+  // Draw faint horizontal grid lines.
   svg.append('g')
-    .attr('transform', `translate(0, ${usableArea.bottom})`)
-    .call(d3.axisBottom(xScale));
+    .attr('class', 'gridlines')
+    .attr('transform', `translate(${usableArea.left}, 0)`)
+    .call(
+      d3.axisLeft(yScale)
+        .tickFormat('')
+        .tickSize(-usableArea.width)
+    );
 
   // Draw the time-of-day axis.
   svg.append('g')
